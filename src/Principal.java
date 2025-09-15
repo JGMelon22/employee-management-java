@@ -1,6 +1,7 @@
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,6 +40,10 @@ public class Principal {
         // Imprimir aniversariantes dos meses 10 e 12
         System.out.println("\n=== ANIVERSARIANTES DOS MESES 10 E 12 ===");
         imprimirAniversariantes(funcionarios, 10, 12);
+
+        // Funcionário com maior idade
+        System.out.println("\n=== FUNCIONÁRIO COM MAIOR IDADE ===");
+        imprimirFuncionarioMaiorIdade(funcionarios);
     }
 
     private static void inserirFuncionarios(List<Funcionario> funcionarios) {
@@ -92,6 +97,15 @@ public class Principal {
                 .forEach(f -> {
                     String dataFormatada = f.getDataNascimento().format(DATE_FORMATTER);
                     System.out.printf("Nome: %s, Data Nascimento: %s%n", f.getNome(), dataFormatada);
+                });
+    }
+
+    private static void imprimirFuncionarioMaiorIdade(List<Funcionario> funcionarios) {
+        funcionarios.stream()
+                .max(Comparator.comparing(f -> Period.between(f.getDataNascimento(), LocalDate.now()).getYears()))
+                .ifPresent(f -> {
+                    int idade = Period.between(f.getDataNascimento(), LocalDate.now()).getYears();
+                    System.out.printf("Nome: %s, Idade: %d anos%n", f.getNome(), idade);
                 });
     }
 }
