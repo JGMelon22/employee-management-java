@@ -25,6 +25,11 @@ public class Principal {
         funcionarios.removeIf(f -> f.getNome().equals("João"));
         System.out.println("\n=== APÓS REMOÇÃO DO JOÃO ===");
         imprimirFuncionarios(funcionarios);
+
+        // Aplicar aumento de 10%
+        aplicarAumento(funcionarios, new BigDecimal("0.10"));
+        System.out.println("\n=== APÓS AUMENTO DE 10% ===");
+        imprimirFuncionarios(funcionarios);
     }
 
     private static void inserirFuncionarios(List<Funcionario> funcionarios) {
@@ -46,6 +51,13 @@ public class Principal {
             String salarioFormatado = DECIMAL_FORMATTER.format(f.getSalario()).replace(",", "X").replace(".", ",").replace("X", ".");
             System.out.printf("Nome: %s, Data Nascimento: %s, Salário: R$ %s, Função: %s%n",
                     f.getNome(), dataFormatada, salarioFormatado, f.getFuncao());
+        });
+    }
+
+    private static void aplicarAumento(List<Funcionario> funcionarios, BigDecimal percentual) {
+        funcionarios.forEach(f -> {
+            BigDecimal aumento = f.getSalario().multiply(percentual);
+            f.setSalario(f.getSalario().add(aumento));
         });
     }
 }
