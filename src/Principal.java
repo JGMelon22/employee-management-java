@@ -44,6 +44,10 @@ public class Principal {
         // Funcionário com maior idade
         System.out.println("\n=== FUNCIONÁRIO COM MAIOR IDADE ===");
         imprimirFuncionarioMaiorIdade(funcionarios);
+
+        // Lista em ordem alfabética
+        System.out.println("\n=== FUNCIONÁRIOS EM ORDEM ALFABÉTICA ===");
+        imprimirOrdemAlfabetica(funcionarios);
     }
 
     private static void inserirFuncionarios(List<Funcionario> funcionarios) {
@@ -107,5 +111,11 @@ public class Principal {
                     int idade = Period.between(f.getDataNascimento(), LocalDate.now()).getYears();
                     System.out.printf("Nome: %s, Idade: %d anos%n", f.getNome(), idade);
                 });
+    }
+
+    private static void imprimirOrdemAlfabetica(List<Funcionario> funcionarios) {
+        funcionarios.stream()
+                .sorted(Comparator.comparing(Funcionario::getNome))
+                .forEach(f -> System.out.println(f.getNome()));
     }
 }
