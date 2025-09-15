@@ -2,9 +2,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -37,6 +35,10 @@ public class Principal {
         Map<String, List<Funcionario>> funcionariosPorFuncao = agruparPorFuncao(funcionarios);
         System.out.println("\n=== FUNCIONÁRIOS AGRUPADOS POR FUNÇÃO ===");
         imprimirPorFuncao(funcionariosPorFuncao);
+
+        // Imprimir aniversariantes dos meses 10 e 12
+        System.out.println("\n=== ANIVERSARIANTES DOS MESES 10 E 12 ===");
+        imprimirAniversariantes(funcionarios, 10, 12);
     }
 
     private static void inserirFuncionarios(List<Funcionario> funcionarios) {
@@ -81,5 +83,15 @@ public class Principal {
                 System.out.printf("  - %s, %s, R$ %s%n", f.getNome(), dataFormatada, salarioFormatado);
             });
         });
+    }
+
+    private static void imprimirAniversariantes(List<Funcionario> funcionarios, int... meses) {
+        Set<Integer> mesesSet = Arrays.stream(meses).boxed().collect(Collectors.toSet());
+        funcionarios.stream()
+                .filter(f -> mesesSet.contains(f.getDataNascimento().getMonthValue()))
+                .forEach(f -> {
+                    String dataFormatada = f.getDataNascimento().format(DATE_FORMATTER);
+                    System.out.printf("Nome: %s, Data Nascimento: %s%n", f.getNome(), dataFormatada);
+                });
     }
 }
