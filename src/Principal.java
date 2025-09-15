@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -52,6 +53,10 @@ public class Principal {
         // Total dos salários
         System.out.println("\n=== TOTAL DOS SALÁRIOS ===");
         imprimirTotalSalarios(funcionarios);
+
+        // Quantos salários mínimos cada funcionário ganha
+        System.out.println("\n=== SALÁRIOS EM MÚLTIPLOS DO SALÁRIO MÍNIMO ===");
+        imprimirSalariosMinimos(funcionarios);
     }
 
     private static void inserirFuncionarios(List<Funcionario> funcionarios) {
@@ -130,5 +135,13 @@ public class Principal {
 
         String totalFormatado = DECIMAL_FORMATTER.format(total).replace(",", "X").replace(".", ",").replace("X", ".");
         System.out.printf("Total dos salários: R$ %s%n", totalFormatado);
+    }
+
+    private static void imprimirSalariosMinimos(List<Funcionario> funcionarios) {
+        funcionarios.forEach(f -> {
+            BigDecimal multiplo = f.getSalario().divide(SALARIO_MINIMO, 2, RoundingMode.HALF_UP);
+            String multiploFormatado = DECIMAL_FORMATTER.format(multiplo).replace(",", "X").replace(".", ",").replace("X", ".");
+            System.out.printf("%s ganha %s salários mínimos%n", f.getNome(), multiploFormatado);
+        });
     }
 }
