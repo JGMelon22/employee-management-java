@@ -19,12 +19,12 @@ public class Principal {
         // Inserir todos os funcionários
         inserirFuncionarios(funcionarios);
         System.out.println("=== FUNCIONÁRIOS INSERIDOS ===");
-        System.out.println("Total de funcionários: " + funcionarios.size());
+        imprimirFuncionarios(funcionarios);
 
         // Remover funcionário "João"
         funcionarios.removeIf(f -> f.getNome().equals("João"));
         System.out.println("\n=== APÓS REMOÇÃO DO JOÃO ===");
-        System.out.println("Total de funcionários: " + funcionarios.size());
+        imprimirFuncionarios(funcionarios);
     }
 
     private static void inserirFuncionarios(List<Funcionario> funcionarios) {
@@ -38,5 +38,14 @@ public class Principal {
         funcionarios.add(new Funcionario("Laura", LocalDate.of(1994, 7, 8), new BigDecimal("3017.45"), "Gerente"));
         funcionarios.add(new Funcionario("Heloísa", LocalDate.of(2003, 5, 24), new BigDecimal("1606.85"), "Eletricista"));
         funcionarios.add(new Funcionario("Helena", LocalDate.of(1996, 9, 2), new BigDecimal("2799.93"), "Gerente"));
+    }
+
+    private static void imprimirFuncionarios(List<Funcionario> funcionarios) {
+        funcionarios.forEach(f -> {
+            String dataFormatada = f.getDataNascimento().format(DATE_FORMATTER);
+            String salarioFormatado = DECIMAL_FORMATTER.format(f.getSalario()).replace(",", "X").replace(".", ",").replace("X", ".");
+            System.out.printf("Nome: %s, Data Nascimento: %s, Salário: R$ %s, Função: %s%n",
+                    f.getNome(), dataFormatada, salarioFormatado, f.getFuncao());
+        });
     }
 }
