@@ -11,7 +11,6 @@ public class Funcionario extends Pessoa {
         this.funcao = funcao;
     }
 
-    // Getters e Setters
     public BigDecimal getSalario() {
         return salario;
     }
