@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Principal {
     private static final BigDecimal SALARIO_MINIMO = new BigDecimal("1212.00");
@@ -30,6 +32,11 @@ public class Principal {
         aplicarAumento(funcionarios, new BigDecimal("0.10"));
         System.out.println("\n=== APÓS AUMENTO DE 10% ===");
         imprimirFuncionarios(funcionarios);
+
+        // Agrupar e imprimir por função
+        Map<String, List<Funcionario>> funcionariosPorFuncao = agruparPorFuncao(funcionarios);
+        System.out.println("\n=== FUNCIONÁRIOS AGRUPADOS POR FUNÇÃO ===");
+        imprimirPorFuncao(funcionariosPorFuncao);
     }
 
     private static void inserirFuncionarios(List<Funcionario> funcionarios) {
@@ -58,6 +65,21 @@ public class Principal {
         funcionarios.forEach(f -> {
             BigDecimal aumento = f.getSalario().multiply(percentual);
             f.setSalario(f.getSalario().add(aumento));
+        });
+    }
+
+    private static Map<String, List<Funcionario>> agruparPorFuncao(List<Funcionario> funcionarios) {
+        return funcionarios.stream().collect(Collectors.groupingBy(Funcionario::getFuncao));
+    }
+
+    private static void imprimirPorFuncao(Map<String, List<Funcionario>> funcionariosPorFuncao) {
+        funcionariosPorFuncao.forEach((funcao, lista) -> {
+            System.out.println("\nFunção: " + funcao);
+            lista.forEach(f -> {
+                String dataFormatada = f.getDataNascimento().format(DATE_FORMATTER);
+                String salarioFormatado = DECIMAL_FORMATTER.format(f.getSalario()).replace(",", "X").replace(".", ",").replace("X", ".");
+                System.out.printf("  - %s, %s, R$ %s%n", f.getNome(), dataFormatada, salarioFormatado);
+            });
         });
     }
 }
