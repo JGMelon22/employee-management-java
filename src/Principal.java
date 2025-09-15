@@ -20,6 +20,11 @@ public class Principal {
         inserirFuncionarios(funcionarios);
         System.out.println("=== FUNCIONÁRIOS INSERIDOS ===");
         System.out.println("Total de funcionários: " + funcionarios.size());
+
+        // Remover funcionário "João"
+        funcionarios.removeIf(f -> f.getNome().equals("João"));
+        System.out.println("\n=== APÓS REMOÇÃO DO JOÃO ===");
+        System.out.println("Total de funcionários: " + funcionarios.size());
     }
 
     private static void inserirFuncionarios(List<Funcionario> funcionarios) {
